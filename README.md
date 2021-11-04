@@ -1,2 +1,2 @@
-<h1>Jantarova Zpopelňovací Instituce</h1>
-https://soudruhjantar.github.io/Jantarova-Zpopelnovaci-Instituce/
+<h1>Národní Zpopelňovací Instituce</h1>
+https://soudruhjantar.github.io/Narodni-Zpopelnovaci-Instituce/
