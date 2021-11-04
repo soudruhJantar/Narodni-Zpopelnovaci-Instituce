@@ -2,34 +2,6 @@ const clamp = (num, min, max) => Math.min(Math.max(num, min), max)
 const rnd = (min, max) => Math.round(min + (Math.random() * (max - min)))
 const $ = (id) => document.getElementById(id)
 
-function getPos(element){
-	const style = window.getComputedStyle(element)
-	const matrix = style.transform || style.webkitTransform || style.mozTransform
-	if (matrix === 'none') {
-		return {
-			x: 0,
-			y: 0,
-			z: 0
-		}
-	}
-	const matrixType = matrix.includes('3d') ? '3d' : '2d'
-	const matrixValues = matrix.match(/matrix.*\((.+)\)/)[1].split(', ')
-	if (matrixType === '2d') {
-		return {
-			x: matrixValues[4],
-			y: matrixValues[5],
-			z: 0
-		}
-	}
-	if (matrixType === '3d') {
-		return {
-			x: matrixValues[12],
-			y: matrixValues[13],
-			z: matrixValues[14]
-		}
-	}
-}
-
 class shape {
 	constructor(height, width, color, id){
 		this.width = width
@@ -40,15 +12,14 @@ class shape {
 	}
 	
 	build() {
-		let tag = document.createElement('span')
+		var tag = document.createElement('span')
 		
 		document.body.addEventListener('mousemove', event => {
 			if(this.isDown){
 				let moveX = event.pageX - (this.width / 2) + event.movementX
 				let moveY = event.pageY - (this.height / 2) + event.movementY
-				moveX = clamp(moveX, 0, 1200 - this.width)
-				moveY = clamp(moveY, 0, 700 - this.height)
-				tag.style.transform = 'translate(' + moveX + 'px,'+ moveY + 'px)'
+				tag.style.top = clamp(moveY, 0, 700 - this.height)
+				tag.style.left = clamp(moveX, 0, 1200 - this.width)
 			}
 		},true)
 
@@ -72,14 +43,21 @@ class shape {
 		tag.style.backgroundColor = this.color
 		tag.style.border = '2px solid black'
 		tag.style.position = 'absolute'
+		tag.style.display = 'inline-block'
 		document.body.appendChild(tag)
 	}
 	destroy() {
 		document.body.removeChild(document.getElementById(this.id))
 	}
+	applyGravity() {
+		if(!this.isDown) {
+			const topVal = clamp(parseInt($(this.id).style.top, 10), 0, 700 - this.height)
+			$(this.id).style.top = (topVal + 5) + 'px'
+		}
+	}
 }
 
-let shapes = new Array()
+var shapes = new Array()
 
 for (let i = 0; i < 3; i++) { // vytvorit par krabicek
 	shapes[i] = new shape(rnd(50, 200), rnd(50,200), rnd(0, 0xFFFFFE).toString(16), i)
@@ -87,13 +65,7 @@ for (let i = 0; i < 3; i++) { // vytvorit par krabicek
 }
 
 setInterval(function(){
-	move('1', 10, 10)
-},1000)
-
-function move(id, x, y){
-	const originX = getPos($(id)).x
-	const originY = getPos($(id)).y
-	// console.log("X: " + originX)
-	// console.log("Y: " + originY)
-	$(id).style.transform = ''
+	for (let i = 0; i < shapes.length; i++) {
+	shapes[i].applyGravity()
 }
+},1)
