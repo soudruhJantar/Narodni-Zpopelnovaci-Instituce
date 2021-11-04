@@ -1,10 +1,5 @@
 #fire {
 	position: absolute;
-	transform: translate(100px, 250px);
-	
-}
-
-.shape{
-	top: 0;
-	left: 0;
+	transform: translate(100px, 600px);
+	z-index: 2;
 }

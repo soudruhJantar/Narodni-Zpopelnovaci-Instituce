@@ -1,3 +1,7 @@
+
+
+// SCRIPT FILE (NO TOUCHIE, ONLY LOOKIE)
+
 const clamp = (num, min, max) => Math.min(Math.max(num, min), max)
 const rnd = (min, max) => Math.round(min + (Math.random() * (max - min)))
 const $ = (id) => document.getElementById(id)
@@ -12,14 +16,18 @@ class shape {
 	}
 	
 	build() {
+		
 		var tag = document.createElement('span')
+		
+		tag.style.top = 0
+		tag.style.left = 0
 		
 		document.body.addEventListener('mousemove', event => {
 			if(this.isDown){
 				let moveX = event.pageX - (this.width / 2) + event.movementX
 				let moveY = event.pageY - (this.height / 2) + event.movementY
-				tag.style.top = clamp(moveY, 0, 700 - this.height)
-				tag.style.left = clamp(moveX, 0, 1200 - this.width)
+				tag.style.top = clamp(moveY, 0, 900 - this.height)
+				tag.style.left = clamp(moveX, 0, 1400 - this.width)
 			}
 		},true)
 
@@ -51,7 +59,7 @@ class shape {
 	}
 	applyGravity() {
 		if(!this.isDown) {
-			const topVal = clamp(parseInt($(this.id).style.top, 10), 0, 700 - this.height)
+			const topVal = clamp(parseInt($(this.id).style.top, 10), 0, 900 - this.height)
 			$(this.id).style.top = (topVal + 5) + 'px'
 		}
 	}
@@ -59,7 +67,7 @@ class shape {
 
 var shapes = new Array()
 
-for (let i = 0; i < 3; i++) { // vytvorit par krabicek
+for (let i = 0; i < 5; i++) { // vytvorit par krabicek
 	shapes[i] = new shape(rnd(50, 200), rnd(50,200), rnd(0, 0xFFFFFE).toString(16), i)
 	shapes[i].build()
 }
