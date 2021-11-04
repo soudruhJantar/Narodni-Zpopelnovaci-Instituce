@@ -1,5 +1,34 @@
 const clamp = (num, min, max) => Math.min(Math.max(num, min), max)
 const rnd = (min, max) => Math.round(min + (Math.random() * (max - min)))
+const $ = (id) => document.getElementById(id)
+
+function getPos(element){
+	const style = window.getComputedStyle(element)
+	const matrix = style.transform || style.webkitTransform || style.mozTransform
+	if (matrix === 'none') {
+		return {
+			x: 0,
+			y: 0,
+			z: 0
+		}
+	}
+	const matrixType = matrix.includes('3d') ? '3d' : '2d'
+	const matrixValues = matrix.match(/matrix.*\((.+)\)/)[1].split(', ')
+	if (matrixType === '2d') {
+		return {
+			x: matrixValues[4],
+			y: matrixValues[5],
+			z: 0
+		}
+	}
+	if (matrixType === '3d') {
+		return {
+			x: matrixValues[12],
+			y: matrixValues[13],
+			z: matrixValues[14]
+		}
+	}
+}
 
 class shape {
 	constructor(height, width, color, id){
@@ -50,14 +79,21 @@ class shape {
 	}
 }
 
-for (var i = 0; i < 3; i++) { //vytvorit par krabicek
-	new shape(rnd(50, 200), rnd(50,200), rnd(0, 0xFFFFFE).toString(16), i).build()
+let shapes = new Array()
+
+for (let i = 0; i < 3; i++) { // vytvorit par krabicek
+	shapes[i] = new shape(rnd(50, 200), rnd(50,200), rnd(0, 0xFFFFFE).toString(16), i)
+	shapes[i].build()
 }
 
-setInterval(function() { //loop
-	const list = document.getElementsByClassName('shape')
-	for(let i = 0; i < list.length; i++){
-		const e = list[i]
-		console.log(e.left)
-	}
-},100)
+setInterval(function(){
+	move('1', 10, 10)
+},1000)
+
+function move(id, x, y){
+	const originX = getPos($(id)).x
+	const originY = getPos($(id)).y
+	// console.log("X: " + originX)
+	// console.log("Y: " + originY)
+	$(id).style.transform = ''
+}
