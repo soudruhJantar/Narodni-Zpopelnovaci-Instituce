@@ -13,6 +13,7 @@ class shape {
 		this.color = color
 		this.id = id
 		this.isDown = false
+		this.addY = 1
 	}
 	
 	build() {
@@ -59,8 +60,13 @@ class shape {
 	}
 	applyGravity() {
 		if(!this.isDown) {
-			const topVal = clamp(parseInt($(this.id).style.top, 10), 0, 900 - this.height)
-			$(this.id).style.top = (topVal + 5) + 'px'
+			this.addY += .05
+			const topVal = clamp(parseInt($(this.id).style.top, 10), 0, 700 + this.height)
+			console.log(topVal > 700 + this.height)
+			console.log(topVal)
+			$(this.id).style.top = Math.min((topVal + this.addY), 900 - this.height)
+		} else {
+			this.addY = 0
 		}
 	}
 }
