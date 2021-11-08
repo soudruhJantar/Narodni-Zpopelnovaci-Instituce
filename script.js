@@ -69,13 +69,14 @@ class person {
 
 var persons = new Array()
 
-for (let i = 0; i < 5; i++) {
+for (let i = 0; i < 1; i++) {
 	persons[i] = new person(200, 100 , rnd(0, 0xFFFFFE).toString(16), i)
 	persons[i].build()
 }
 
 setInterval(function(){
 	for (let i = 0; i < persons.length; i++) {
+		setTimeout(2000)
 		persons[i].applyGravity()
 	}
 }, 1)
