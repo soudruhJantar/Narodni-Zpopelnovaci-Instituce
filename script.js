@@ -5,6 +5,11 @@ const clamp = (num, min, max) => Math.min(Math.max(num, min), max)
 const rnd = (min, max) => Math.round(min + (Math.random() * (max - min)))
 const $ = (id) => document.getElementById(id)
 
+var height = Math.max(document.body.scrollHeight, document.body.offsetHeight, 
+                      document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight)
+var width = Math.max(document.body.scrollWidth, document.body.offsetWidth, 
+                      document.documentElement.clientWidth, document.documentElement.scrollWidth, document.documentElement.offsetWidth)
+
 function isCollide(a, b) {
   var aRect = a.getBoundingClientRect();
   var bRect = b.getBoundingClientRect();
@@ -12,8 +17,8 @@ function isCollide(a, b) {
   return !(
     ((aRect.top - 270 + aRect.height) < (bRect.top)) ||
     (aRect.top > (bRect.top + bRect.height)) ||
-    ((aRect.left - 100 + aRect.width) < bRect.left) ||
-    (aRect.left > (bRect.left - 100 + bRect.width))
+    ((aRect.left - 70 + aRect.width) < bRect.left) ||
+    (aRect.left > (bRect.left - 70 + bRect.width))
   );
 }
 function addMoney(amount){
@@ -28,9 +33,6 @@ function buyJew(){
     persons.push(p)
     p.build()
     $('jewCounter').innerHTML = persons.length
-    $('jewError').innerHTML = ''
-  } else {
-    $('jewError').innerHTML = 'not enough money'
   }
 }
 
@@ -48,14 +50,14 @@ class person {
 		var tag = document.createElement('div')
 
 		tag.style.top = 0
-		tag.style.left = 700 + rnd(-50, 50)
+		tag.style.left = width * 0.5
 
 		document.body.addEventListener('mousemove', event => {
 			if(this.isDown){
 				let moveX = event.pageX - (this.width / 2) + event.movementX
 				let moveY = event.pageY - (this.height / 2) + event.movementY
-				tag.style.top = clamp(moveY, 0, 900 - this.height)
-				tag.style.left = clamp(moveX, 0, 1400 - this.width)
+				tag.style.top = clamp(moveY, 0, height - this.height)
+				tag.style.left = clamp(moveX, 0, width * 0.65 - this.width)
 			}
 		}, true)
 
@@ -93,8 +95,8 @@ class person {
 	applyGravity() {
 		if(!this.isDown) {
 			this.addY += .6
-			const topVal = clamp(parseInt($(this.id).style.top, 10), 0, 900 - this.height)
-			$(this.id).style.top = Math.min((topVal + this.addY), 900 - this.height)
+			const topVal = clamp(parseInt($(this.id).style.top, 10), 0, height - this.height)
+			$(this.id).style.top = Math.min((topVal + this.addY), height - this.height)
 		} else {
 			this.addY = 0
 		}

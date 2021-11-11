@@ -15,15 +15,20 @@ button {
 	font-size: 30px;
 }
 
+table {
+	width: 100%;
+}
+
 th {
 	padding: 2px;
 	height: 30px;
-	width: 137;
+	width: 33%;
 }
 
 #fire {
 	position: absolute;
-	transform: translate(100px, 600px);
+	bottom: 0px;
+	transform: translateX(10%);
 	z-index: 2;
 }
 
@@ -31,7 +36,8 @@ th {
 	position: absolute;
 	right: 0;
 	top: 0;
-	height: 920;
-	width: 413;
+	height: 100%;
+	width: 35%;
 	background-color: darkgreen;
+	border-left: 5px solid black;
 }
