@@ -5,9 +5,9 @@ const clamp = (num, min, max) => Math.min(Math.max(num, min), max)
 const rnd = (min, max) => Math.round(min + (Math.random() * (max - min)))
 const $ = (id) => document.getElementById(id)
 
-var height = Math.max(document.body.scrollHeight, document.body.offsetHeight, 
+var height = Math.max(document.body.scrollHeight, document.body.offsetHeight,
                       document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight)
-var width = Math.max(document.body.scrollWidth, document.body.offsetWidth, 
+var width = Math.max(document.body.scrollWidth, document.body.offsetWidth,
                       document.documentElement.clientWidth, document.documentElement.scrollWidth, document.documentElement.offsetWidth)
 
 function isCollide(a, b) {
@@ -28,16 +28,28 @@ function addMoney(amount){
 function buyJew(){
   if (money >= 2){
     addMoney(-2)
-    const p = new person(200, 100, num)
+    const p = new person(200, 100, num, "jew")
     num++
-    persons.push(p)
+    jewArray.push(p)
     p.build()
-    $('jewCounter').innerHTML = persons.length
+    $('jewCounter').innerHTML = jewArray.length
+  }
+}
+
+function buyNigger(){
+  if (money >= 10){
+    addMoney(-10)
+    const p = new person(200, 100, num, 'black')
+    num++
+    blackArray.push(p)
+    p.build()
+    $('blackCounter').innerHTML = blackArray.length
   }
 }
 
 class person {
-	constructor(height, width, id){
+	constructor(height, width, id, type){
+    this.type = type
 		this.width = width
 		this.height = height
 		this.id = id
@@ -75,11 +87,18 @@ class person {
 		}, true)
 
 		{
+    switch(this.type){
+      case 'jew':
+        tag.style.background = "url('img/JewTexture.png')"
+        break
+      case 'black':
+        tag.style.background = "url('img/BlackTexture.png')"
+        break
+    }
 		tag.id = this.id
 		tag.className = 'person'
 		tag.style.height = this.height
 		tag.style.width = this.width
-		tag.style.background = "url('img/JewTexture.png')"
 		tag.style.backgroundPosition = 'center'
 		tag.style.backgroundSize = 'cover'
 		tag.style.position = 'absolute'
@@ -88,9 +107,17 @@ class person {
 		document.body.appendChild(tag)
 	}
 	destroy() {
-    persons.splice(persons.indexOf(this), 1)
+    switch(this.type) {
+      case 'jew':
+        jewArray.splice(jewArray.indexOf(this), 1)
+        $('jewCounter').innerHTML = jewArray.length
+        break
+      case 'black':
+        blackArray.splice(blackArray.indexOf(this), 1)
+        $('blackCounter').innerHTML = jewArray.length
+        break
+    }
 		document.body.removeChild(document.getElementById(this.id))
-    $('jewCounter').innerHTML = persons.length
 	}
 	applyGravity() {
 		if(!this.isDown) {
@@ -103,18 +130,27 @@ class person {
 	}
 }
 
-var persons = []
+var jewArray = []
+var blackArray = []
 
-persons.push(new person(200, 100, 'initial'))
-persons[0].build()
+jewArray.push(new person(200, 100, 'initial', 'jew'))
+jewArray[0].build()
 
 setInterval(function(){ // LOOP
 
-	for (let i = 0; i < persons.length; i++) {
-		persons[i].applyGravity()
-		if(isCollide($(persons[i].id), $('fire'))){
-			persons[i].destroy()
-			addMoney(5)
+	for (let i = 0; i < jewArray.length; i++) {
+		jewArray[i].applyGravity()
+		if(isCollide($(jewArray[i].id), $('fire'))){
+      addMoney(5)
+      jewArray[i].destroy()
+		}
+	}
+
+  for (let i = 0; i < blackArray.length; i++) {
+		blackArray[i].applyGravity()
+		if(isCollide($(blackArray[i].id), $('fire'))){
+      addMoney(15)
+      blackArray[i].destroy()
 		}
 	}
 
