@@ -23,7 +23,7 @@ function isCollide(a, b) {
 }
 function addMoney(amount){
   money += amount
-  $('moneyCounter').innerHTML = money + ' RM'
+  $('moneyCounter').innerHTML = Math.round(money) + ' RM'
 }
 function buyJew(){
   if (money >= 2){
@@ -97,6 +97,7 @@ class person {
     }
 		tag.id = this.id
 		tag.className = 'person'
+    tag.style.color = 'black'
 		tag.style.height = this.height
 		tag.style.width = this.width
 		tag.style.backgroundPosition = 'center'
@@ -140,17 +141,19 @@ setInterval(function(){ // LOOP
 
 	for (let i = 0; i < jewArray.length; i++) {
 		jewArray[i].applyGravity()
-		if(isCollide($(jewArray[i].id), $('fire'))){
-      addMoney(5)
-      jewArray[i].destroy()
+		if(isCollide($(jewArray[i].id), $('fire'))) {
+      setTimeout(() => {jewArray[i].destroy()}, 600)
+      $(jewArray[i].id).classList.add('burn')
+      addMoney(0.25)
 		}
 	}
 
   for (let i = 0; i < blackArray.length; i++) {
 		blackArray[i].applyGravity()
-		if(isCollide($(blackArray[i].id), $('fire'))){
-      addMoney(15)
-      blackArray[i].destroy()
+		if(isCollide($(blackArray[i].id), $('fire'))) {
+      setTimeout(() => {blackArray[i].destroy()}, 600)
+      $(blackArray[i].id).classList.add('burn')
+      addMoney(0.5)
 		}
 	}
 
