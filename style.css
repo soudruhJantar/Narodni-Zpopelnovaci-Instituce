@@ -41,3 +41,27 @@ th {
 	background-color: darkgreen;
 	border-left: 5px solid black;
 }
+
+.burn {
+	filter: grayscale(100%);
+	animation: smoke 0.5s forwards;
+  transform-origin: 50% 100%;
+}
+
+@keyframes smoke {
+  0% {
+    opacity: 1;
+    filter: blur(0);
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 1;
+    pointer-events: none;
+  }
+  100% {
+    opacity: 0;
+    filter: blur(60px);
+    transform:translateY(-400px) scale(4);
+  }
+}

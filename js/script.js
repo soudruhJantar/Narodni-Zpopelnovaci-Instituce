@@ -36,7 +36,7 @@ function isCollide(a, b) {
 
 function addMoney(amount) {
   money += amount
-  $('moneyCounter').innerHTML = money + ' RM'
+  $('moneyCounter').innerHTML = Math.round(money) + ' RM'
 }
 
 function buyJew() {
