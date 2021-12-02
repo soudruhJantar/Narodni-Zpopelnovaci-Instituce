@@ -148,7 +148,7 @@ class person {
   applyGravity() {
     if (!this.isDown) {
       this.addY += 1.5
-      $(this.id).style.top = clamp(parseInt($(this.id).style.top) + this.addY, 0, 800).toString()
+      $(this.id).style.top = clamp(parseInt($(this.id).style.top) + this.addY, 0, height - this.height).toString()
     } else {
       this.addY = 0
     }
