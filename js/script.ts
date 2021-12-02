@@ -6,24 +6,31 @@ const rnd = (min: number, max: number) => Math.round(min + (Math.random() * (max
 const $ = (id: string) => document.getElementById(id)
 
 var allArray = []
+
 var jewArray = []
 var blackArray = []
+var richArray = []
 
 class type {
+
   arr: Array<person>
   counter: HTMLElement
+  texture: string
   buyPrice: number
   sellPrice: number
-  constructor(arr: Array<person>, counter: HTMLElement, buyPrice: number) {
+
+  constructor(arr: Array<person>, counter: HTMLElement, texture: string, buyPrice: number) {
     this.arr = arr
     this.counter = counter
+    this.texture = texture
     this.buyPrice = buyPrice
     this.sellPrice = Math.round(buyPrice * 1.5)
   }
 }
 
-var typeJew = new type(jewArray, $('jewCounter'), 2)
-var typeBlack = new type(blackArray, $('blackCounter'), 10)
+var typeJew = new type(jewArray, $('jewCounter'), "url('img/JewTexture.png')", 2)
+var typeBlack = new type(blackArray, $('blackCounter'), "url('img/BlackTexture.png')", 10)
+var typeRich = new type(richArray, $('richCounter'), "url('img/RichTexture.png')", 100)
 
 var height = Math.max(document.body.scrollHeight, document.body.offsetHeight,
   document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight)
@@ -58,37 +65,15 @@ function buy(type: type) {
   }
 }
 
-function buyJew() {
-  if (money >= 2) {
-    addMoney(-2)
-    const p = new person(200, 100, num.toString(), typeJew)
-    num++
-    jewArray.push(p)
-    allArray.push(p)
-    p.build()
-    $('jewCounter').innerHTML = jewArray.length.toString()
-  }
-}
-
-function buyNigger() {
-  if (money >= 10) {
-    addMoney(-10)
-    const p = new person(200, 100, num.toString(), typeBlack)
-    num++
-    blackArray.push(p)
-    allArray.push(p)
-    p.build()
-    $('blackCounter').innerHTML = blackArray.length.toString()
-  }
-}
-
 class person {
+
   type: type
   width: number
   height: number
   id: string
   isDown: boolean
   addY: number
+
   constructor(height: number, width: number, id: string, type: type) {
     this.type = type
     this.width = width
@@ -96,6 +81,7 @@ class person {
     this.id = id
     this.isDown = false
     this.addY = 2
+    num += 1
   }
 
   build() {
@@ -119,22 +105,15 @@ class person {
     }, true)
 
     tag.addEventListener('mousedown', event => {
-      let num = Array.from(document.getElementsByClassName('mat-form-field-infix') as HTMLCollectionOf<HTMLElement>)
-      for (var i = 0; i < num.length; i++) {
-        num[i].style.zIndex = '0'
+      let n = Array.from(document.getElementsByClassName('mat-form-field-infix') as HTMLCollectionOf<HTMLElement>)
+      for (var i = 0; i < n.length; i++) {
+        n[i].style.zIndex = '0'
       }
       tag.style.zIndex = '1'
       this.isDown = true
     }, true)
 
-    switch (this.type) {
-      case typeJew:
-        tag.style.background = "url('img/JewTexture.png')"
-        break
-      case typeBlack:
-        tag.style.background = "url('img/BlackTexture.png')"
-        break
-    }
+    tag.style.backgroundImage = this.type.texture
 
     tag.id = this.id
     tag.className = 'person'

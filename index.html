@@ -1,45 +1,56 @@
 <html>
 
 <head>
-	<script type="text/typescript" src='js/script.ts' defer></script>
-	<link rel='stylesheet' href='style.css'>
-	</link>
+  <script type="text/typescript" src='js/script.ts' defer></script>
+  <link rel='stylesheet' href='style.css'>
+  </link>
 </head>
 
-<body style='background-color: gray'>
-	<image id='fire' src='img/fire.gif'></image>
-	<div id='panel'>
-		<table>
-			<tr>
-				<th>
-					<p>Peníze: </p>
-				</th>
-				<th>
-					<p id='moneyCounter'>2 RM</p>
-				</th>
-			</tr>
-			<tr>
-				<th><button onclick='buy(typeJew)'>Koupit LVL I</button></th>
-				<th>
-					<p>Cena: 2 RM</p>
-				</th>
-				<th>
-					<p id='jewCounter'>1</p>
-				</th>
-			</tr>
-			<tr>
-				<th><button onclick='buyNigger()'>Koupit LVL II</button></th>
-				<th>
-					<p>Cena: 10 RM</p>
-				</th>
-				<th>
-					<p id='blackCounter'>0</p>
-				</th>
-			</tr>
-		</table>
-	</div>
-	<script src="https://rawgit.com/Microsoft/TypeScript/master/lib/typescriptServices.js"></script>
-	<script src="https://rawgit.com/basarat/typescript-script/master/transpiler.js"></script>
+<body style='background-color: #444'>
+  <image id='fire' src='img/fire.gif'></image>
+  <div id='panel'>
+    <table>
+      <tr>
+        <th>
+          <p>Peníze: </p>
+        </th>
+        <th>
+          <p id='moneyCounter'>2 RM</p>
+        </th>
+      </tr>
+      <tr>
+        <th><button onclick='buy(typeJew)'>Koupit LVL I</button></th>
+        <th>
+          <p>Cena: 2 RM</p>
+        </th>
+        <th>
+          <p id='jewCounter'>1</p>
+        </th>
+      </tr>
+      <tr>
+        <th><button onclick='buy(typeBlack)'>Koupit LVL II</button></th>
+        <th>
+          <p>Cena: 10 RM</p>
+        </th>
+        <th>
+          <p id='blackCounter'>0</p>
+        </th>
+      </tr>
+      <tr>
+        <th><button onclick='buy(typeRich)'>Koupit LVL III</button></th>
+        <th>
+          <p>Cena: 50 RM</p>
+        </th>
+        <th>
+          <p id='richCounter'>0</p>
+        </th>
+      </tr>
+    </table>
+  </div>
+
+  <!-- Skripty aby TypeScript fungoval -->
+  <script src="https://rawgit.com/Microsoft/TypeScript/master/lib/typescriptServices.js"></script>
+  <script src="https://rawgit.com/basarat/typescript-script/master/transpiler.js"></script>
 </body>
 
 </html>
