@@ -13,6 +13,37 @@ var richArray = []
 var transArray = []
 var baldArray = []
 
+function arrToStr(type: type) { // "id:top:left"
+  const arr = type.arr
+  let str = ''
+  for (let i = 0; i < arr.length; i++) {
+    str += arr[i].id
+    str += ':'
+    str += $(arr[i].id).style.top
+    str += ':'
+    str += $(arr[i].id).style.left
+    str += '-'
+  }
+  if (str.endsWith('-')) {
+    str.slice(0, -1)
+  }
+  return str
+}
+
+class saveLoad {
+  static saveGame() {
+    localStorage.setItem('money', money.toString())
+    localStorage.setItem('jewArray', arrToStr(typeJew))
+    localStorage.setItem('blackArray', arrToStr(typeBlack))
+    localStorage.setItem('richArray', arrToStr(typeRich))
+    localStorage.setItem('transArray', arrToStr(typeTrans))
+    localStorage.setItem('baldArray', arrToStr(typeJew))
+  }
+  static loadGame() {
+    addMoney(parseInt(localStorage.getItem('money')))
+  }
+}
+
 class type {
 
   arr: Array<person>
@@ -21,16 +52,17 @@ class type {
   buyPrice: number
   sellPrice: number
 
-  constructor(arr: Array<person>, counter: HTMLElement, texture: string, buyPrice: number) {
+  constructor(arr: Array<person>, counter: HTMLElement, texture: string, buyPrice: number, sellPrice?: number) {
     this.arr = arr
     this.counter = counter
     this.texture = texture
     this.buyPrice = buyPrice
-    this.sellPrice = Math.round(buyPrice * 1.5)
+    if (sellPrice == null) this.sellPrice = this.buyPrice * 1.5
+    else this.sellPrice = sellPrice
   }
 }
 
-var typeJew = new type(jewArray, $('jewCounter'), "url('img/JewTexture.png')", 2)
+var typeJew = new type(jewArray, $('jewCounter'), "url('img/JewTexture.png')", 2, 5)
 var typeBlack = new type(blackArray, $('blackCounter'), "url('img/BlackTexture.png')", 10)
 var typeRich = new type(richArray, $('richCounter'), "url('img/RichTexture.png')", 100)
 var typeTrans = new type(transArray, $('transCounter'), "url('img/TransTexture.png')", 500)
@@ -134,10 +166,8 @@ class person {
   destroy() {
     const arr = this.type.arr
     if (arr.indexOf(this) > -1) {
-      console.log('deleting ' + this)
       arr.splice(arr.indexOf(this), 1)
       allArray.splice(allArray.indexOf(this), 1)
-      console.log(allArray)
     }
 
     this.type.counter.innerHTML = arr.length.toString()
