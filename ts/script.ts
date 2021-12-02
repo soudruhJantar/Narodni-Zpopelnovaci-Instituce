@@ -1,5 +1,5 @@
 var num = 0
-var money = 2
+var money = 5
 
 const clamp = (num: number, min: number, max: number) => Math.min(Math.max(num, min), max)
 const rnd = (min: number, max: number) => Math.round(min + (Math.random() * (max - min)))
@@ -10,6 +10,7 @@ var allArray = []
 var jewArray = []
 var blackArray = []
 var richArray = []
+var transArray = []
 
 class type {
 
@@ -31,6 +32,7 @@ class type {
 var typeJew = new type(jewArray, $('jewCounter'), "url('img/JewTexture.png')", 2)
 var typeBlack = new type(blackArray, $('blackCounter'), "url('img/BlackTexture.png')", 10)
 var typeRich = new type(richArray, $('richCounter'), "url('img/RichTexture.png')", 100)
+var typeTrans = new type(transArray, $('transCounter'), "url('img/TransTexture.png')", 500)
 
 var height = Math.max(document.body.scrollHeight, document.body.offsetHeight,
   document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight)
@@ -62,6 +64,7 @@ function buy(type: type) {
     allArray.push(p)
     p.build()
     type.counter.innerHTML = type.arr.length.toString()
+    $('allCounter').innerHTML = 'Celkem lidí: ' + allArray.length.toString()
   }
 }
 
@@ -80,12 +83,11 @@ class person {
     this.height = height
     this.id = id
     this.isDown = false
-    this.addY = 2
+    this.addY = 20
     num += 1
   }
 
   build() {
-
     var tag = document.createElement('div')
 
     tag.style.top = '0'
@@ -105,7 +107,7 @@ class person {
     }, true)
 
     tag.addEventListener('mousedown', event => {
-      let n = Array.from(document.getElementsByClassName('mat-form-field-infix') as HTMLCollectionOf<HTMLElement>)
+      const n = Array.from(document.getElementsByClassName('mat-form-field-infix') as HTMLCollectionOf<HTMLElement>)
       for (var i = 0; i < n.length; i++) {
         n[i].style.zIndex = '0'
       }
@@ -129,17 +131,24 @@ class person {
 
   destroy() {
     const arr = this.type.arr
-    arr.splice(arr.indexOf(this), 1)
-    allArray.splice(arr.indexOf(this), 1)
+    if (arr.indexOf(this) > -1) {
+      console.log('deleting ' + this)
+      arr.splice(arr.indexOf(this), 1)
+      allArray.splice(allArray.indexOf(this), 1)
+      console.log(allArray)
+    }
+
     this.type.counter.innerHTML = arr.length.toString()
+
     document.body.removeChild(document.getElementById(this.id))
+
+    $('allCounter').innerHTML = 'Celkem lidí: ' + allArray.length.toString()
   }
 
   applyGravity() {
     if (!this.isDown) {
-      this.addY += .6
-      const topVal = clamp(parseInt($(this.id).style.top, 10), 0, height - this.height)
-      $(this.id).style.top = Math.min((topVal + this.addY), height - this.height).toString()
+      this.addY += 1.5
+      $(this.id).style.top = clamp(parseInt($(this.id).style.top) + this.addY, 0, 800).toString()
     } else {
       this.addY = 0
     }
@@ -158,4 +167,4 @@ setInterval(function () { // LOOP
     allArray[i].applyGravity()
     allArray[i].checkFire()
   }
-}, 10)
+}, 20)

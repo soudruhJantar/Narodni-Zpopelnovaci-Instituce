@@ -45,7 +45,7 @@ th {
 .burn {
 	filter: grayscale(100%);
 	animation: smoke 0.5s forwards;
-  transform-origin: 50% 100%;
+	transform-origin: 50% 100%;
 }
 
 @keyframes smoke {

@@ -1,7 +1,7 @@
 <html>
 
 <head>
-  <script type="text/typescript" src='js/script.ts' defer></script>
+  <script type="text/typescript" src='ts/script.ts' defer></script>
   <link rel='stylesheet' href='style.css'>
   </link>
 </head>
@@ -15,7 +15,7 @@
           <p>Peníze: </p>
         </th>
         <th>
-          <p id='moneyCounter'>2 RM</p>
+          <p id='moneyCounter'>5 RM</p>
         </th>
       </tr>
       <tr>
@@ -39,13 +39,24 @@
       <tr>
         <th><button onclick='buy(typeRich)'>Koupit LVL III</button></th>
         <th>
-          <p>Cena: 50 RM</p>
+          <p>Cena: 100 RM</p>
         </th>
         <th>
           <p id='richCounter'>0</p>
         </th>
       </tr>
+      <tr>
+        <th><button onclick='buy(typeTrans)'>Koupit LVL IV</button></th>
+        <th>
+          <p>Cena: 500 RM</p>
+        </th>
+        <th>
+          <p id='transCounter'>0</p>
+        </th>
+      </tr>
     </table>
+    <p id='allCounter'>Celkem lidí: 0</p>
+    <a href="https://github.com/soudruhJantar/Narodni-Zpopelnovaci-Instituce">GitHub</a>
   </div>
 
   <!-- Skripty aby TypeScript fungoval -->
