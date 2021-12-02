@@ -22,7 +22,7 @@ function arrToStr(type: type) { // "id:top:left"
     str += $(arr[i].id).style.top
     str += ':'
     str += $(arr[i].id).style.left
-    str += '-'
+    if (!(i == arr.length - 1)) str += '-'
   }
   if (str.endsWith('-')) {
     str.slice(0, -1)
