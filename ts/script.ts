@@ -132,10 +132,8 @@ class person {
   destroy() {
     const arr = this.type.arr
     if (arr.indexOf(this) > -1) {
-      console.log('deleting ' + this)
       arr.splice(arr.indexOf(this), 1)
       allArray.splice(allArray.indexOf(this), 1)
-      console.log(allArray)
     }
 
     this.type.counter.innerHTML = arr.length.toString()
