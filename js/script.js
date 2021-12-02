@@ -1,10 +1,11 @@
 var num = 0
-var money = 0
+var money = 2
 
 const clamp = (num, min, max) => Math.min(Math.max(num, min), max)
 const rnd = (min, max) => Math.round(min + (Math.random() * (max - min)))
 const $ = (id) => document.getElementById(id)
 
+var allArray = []
 var jewArray = []
 var blackArray = []
 
@@ -16,6 +17,9 @@ class type {
     this.sellPrice = buyPrice * 1.5
   }
 }
+
+var typeJew = new type(jewArray, $('jewCounter'), 2)
+var typeBlack = new type(blackArray, $('blackCounter'), 10)
 
 var height = Math.max(document.body.scrollHeight, document.body.offsetHeight,
   document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight)
@@ -39,12 +43,22 @@ function addMoney(amount) {
   $('moneyCounter').innerHTML = Math.round(money) + ' RM'
 }
 
-function buyJew() {
+function buy (type) {
+  if(money >= type.buyPrice) {
+    const p = new person(200, 100, num, type)
+    addMoney(-type.buyPrice)
+    type.arr.push(p)
+    allArray.push(p)
+  }
+}
+
+function buyJew () {
   if (money >= 2) {
     addMoney(-2)
-    const p = new person(200, 100, num, "jew")
+    const p = new person(200, 100, num, typeJew)
     num++
     jewArray.push(p)
+    allArray.push(p)
     p.build()
     $('jewCounter').innerHTML = jewArray.length
   }
@@ -53,9 +67,10 @@ function buyJew() {
 function buyNigger() {
   if (money >= 10) {
     addMoney(-10)
-    const p = new person(200, 100, num, 'black')
+    const p = new person(200, 100, num, typeBlack)
     num++
     blackArray.push(p)
+    allArray.push(p)
     p.build()
     $('blackCounter').innerHTML = blackArray.length
   }
@@ -100,40 +115,34 @@ class person {
       this.isDown = true
     }, true)
 
-    {
-      switch (this.type) {
-        case 'jew':
-          tag.style.background = "url('img/JewTexture.png')"
-          break
-        case 'black':
-          tag.style.background = "url('img/BlackTexture.png')"
-          break
-      }
-      tag.id = this.id
-      tag.className = 'person'
-      tag.style.height = this.height
-      tag.style.width = this.width
-      tag.style.backgroundPosition = 'center'
-      tag.style.backgroundSize = 'cover'
-      tag.style.position = 'absolute'
-      tag.style.display = 'block'
+    switch (this.type) {
+      case typeJew:
+        tag.style.background = "url('img/JewTexture.png')"
+        break
+      case typeBlack:
+        tag.style.background = "url('img/BlackTexture.png')"
+        break
     }
+    tag.id = this.id
+   tag.className = 'person'
+    tag.style.height = this.height
+    tag.style.width = this.width
+    tag.style.backgroundPosition = 'center'
+    tag.style.backgroundSize = 'cover'
+    tag.style.position = 'absolute'
+    tag.style.display = 'block'
+
     document.body.appendChild(tag)
   }
-  destroy() {
-    switch (this.type) {
-      case 'jew':
-        jewArray.splice(jewArray.indexOf(this), 1)
-        $('jewCounter').innerHTML = jewArray.length
-        break
-      case 'black':
-        blackArray.splice(blackArray.indexOf(this), 1)
-        $('blackCounter').innerHTML = jewArray.length
-        break
-    }
+
+  destroy () {
+    const arr = this.type.arr
+    arr.splice(arr.indexOf(this), 1)
+    allArray.splice(arr.indexOf(this), 1)
     document.body.removeChild(document.getElementById(this.id))
   }
-  applyGravity() {
+
+  applyGravity () {
     if (!this.isDown) {
       this.addY += .6
       const topVal = clamp(parseInt($(this.id).style.top, 10), 0, height - this.height)
@@ -142,14 +151,18 @@ class person {
       this.addY = 0
     }
   }
+
+  checkFire() {
+    if (isCollide($(this.id), $('fire'))) {
+      addMoney(this.type.sellPrice)
+      this.destroy()
+    }
+  }
 }
 
-jewArray.push(new person(200, 100, 'initial', 'jew'))
-jewArray[0].build()
+setInterval (function() { // LOOP
 
-setInterval(function() { // LOOP
-
-  for (let i = 0; i < jewArray.length; i++) {
+  /*for (let i = 0; i < jewArray.length; i++) {
     jewArray[i].applyGravity()
     if (isCollide($(jewArray[i].id), $('fire'))) {
       addMoney(5)
@@ -163,6 +176,10 @@ setInterval(function() { // LOOP
       addMoney(15)
       blackArray[i].destroy()
     }
-  }
+  }*/
 
+  for (let i = 0; i < allArray.length; i++) {
+    allArray[i].applyGravity()
+    allArray[i].checkFire()
+  }
 }, 10)
