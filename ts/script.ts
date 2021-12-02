@@ -31,7 +31,7 @@ class type {
 
 var typeJew = new type(jewArray, $('jewCounter'), "url('img/JewTexture.png')", 2)
 var typeBlack = new type(blackArray, $('blackCounter'), "url('img/BlackTexture.png')", 10)
-var typeRich = new type(richArray, $('richCounter'), "url('img/RichTexture.PNG')", 100)
+var typeRich = new type(richArray, $('richCounter'), "url('img/RichTexture.png')", 100)
 var typeTrans = new type(transArray, $('transCounter'), "url('img/TransTexture.png')", 500)
 
 var height = Math.max(document.body.scrollHeight, document.body.offsetHeight,
