@@ -48,7 +48,7 @@ function isCollide(a: Element, b: Element) {
     (aRect.top > (bRect.top + bRect.height)) ||
     ((aRect.left - 70 + aRect.width) < bRect.left) ||
     (aRect.left > (bRect.left - 70 + bRect.width))
-  );
+  )
 }
 
 function addMoney(amount: number) {
@@ -91,7 +91,7 @@ class person {
     var tag = document.createElement('div')
 
     tag.style.top = '0'
-    tag.style.left = (width * 0.5).toString()
+    tag.style.left = ((width * 0.5) + rnd(-30, 30)).toString()
 
     document.body.addEventListener('mousemove', event => {
       if (this.isDown) {
