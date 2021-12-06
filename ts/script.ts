@@ -39,7 +39,7 @@ var height = Math.max(document.body.scrollHeight, document.body.offsetHeight,
 var width = Math.max(document.body.scrollWidth, document.body.offsetWidth,
   document.documentElement.clientWidth, document.documentElement.scrollWidth, document.documentElement.offsetWidth)
 
-function isCollide(a: Element, b: Element) {
+function isCollide(a: HTMLElement, b: HTMLElement) {
   var aRect = a.getBoundingClientRect();
   var bRect = b.getBoundingClientRect();
 
