@@ -32,7 +32,7 @@ class saveLoad {
     return str
   }
 
-  static strToArr(type: type, string: string) {
+  private static strToArr(type: type, string: string) {
     if (string != '') {
       const array = type.arr
       const peopleData = string.split('-')
