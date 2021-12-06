@@ -36,7 +36,6 @@ class saveLoad {
     if (string != '') {
       const array = type.arr
       const peopleData = string.split('-')
-      console.log('people data: ' + peopleData)
       let id: string
       for (let i = 0; i < peopleData.length; i++) {
         const idArr = peopleData[i].split('/')
@@ -44,13 +43,7 @@ class saveLoad {
         const posArr = idArr[1].split(':')
         const posTop = posArr[0]
         const posLeft = posArr[1]
-        console.log('idArr: ' + idArr)
-        console.log('id: ' + id)
-        console.log('posArr: ' + posArr)
-        console.log('posTop: ' + posTop)
-        console.log('posLeft: ' + posLeft)
         const p = new person(200, 100, id, type)
-        console.log('type: ' + type.buyPrice)
         array.push(p)
         allArray.push(p)
         p.build()
