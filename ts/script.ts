@@ -106,7 +106,7 @@ class type {
 
 var typeJew = new type(jewArray, $('jewCounter'), "url('img/JewTexture.png')", 2, 5)
 var typeBlack = new type(blackArray, $('blackCounter'), "url('img/BlackTexture.png')", 10)
-var typeRich = new type(richArray, $('richCounter'), "url('img/RichTexture.png')", 100)
+var typeRich = new type(richArray, $('richCounter'), "url('img/RichTex.png')", 100)
 var typeTrans = new type(transArray, $('transCounter'), "url('img/TransTexture.png')", 500)
 var typeBald = new type(baldArray, $('baldCounter'), "url('img/BaldTexture.png')", 2000)
 
@@ -115,7 +115,7 @@ var height = Math.max(document.body.scrollHeight, document.body.offsetHeight,
 var width = Math.max(document.body.scrollWidth, document.body.offsetWidth,
   document.documentElement.clientWidth, document.documentElement.scrollWidth, document.documentElement.offsetWidth)
 
-function isCollide(a: Element, b: Element) {
+function isCollide(a: HTMLElement, b: HTMLElement) {
   var aRect = a.getBoundingClientRect();
   var bRect = b.getBoundingClientRect();
 
@@ -124,7 +124,7 @@ function isCollide(a: Element, b: Element) {
     (aRect.top > (bRect.top + bRect.height)) ||
     ((aRect.left - 70 + aRect.width) < bRect.left) ||
     (aRect.left > (bRect.left - 70 + bRect.width))
-  );
+  )
 }
 
 function addMoney(amount: number) {
@@ -173,7 +173,7 @@ class person {
     var tag = document.createElement('div')
 
     tag.style.top = '0'
-    tag.style.left = (width * 0.5).toString()
+    tag.style.left = ((width * 0.5) + rnd(-30, 30)).toString()
 
     document.body.addEventListener('mousemove', event => {
       if (this.isDown) {
