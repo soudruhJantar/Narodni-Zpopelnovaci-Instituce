@@ -4,6 +4,13 @@ var money = 5
 const clamp = (num: number, min: number, max: number) => Math.min(Math.max(num, min), max)
 const rnd = (min: number, max: number) => Math.round(min + (Math.random() * (max - min)))
 const $ = (id: string) => document.getElementById(id)
+function delay(delayInms) {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve(2);
+    }, delayInms);
+  });
+}
 
 var allArray = []
 
@@ -73,6 +80,7 @@ class saveLoad {
     localStorage.setItem('transArray', this.arrToStr(typeTrans))
     localStorage.setItem('baldArray', this.arrToStr(typeBald))
   }
+
   static loadGame() {
     this.removeAllPeople()
     num = 0
@@ -152,6 +160,7 @@ class person {
   id: string
   isDown: boolean
   addY: number
+  w: boolean
 
   constructor(height: number, width: number, id: string, type: type) {
     this.type = type
@@ -160,6 +169,7 @@ class person {
     this.id = id
     this.isDown = false
     this.addY = 20
+    this.w = false
     num += 1
   }
 
@@ -235,9 +245,13 @@ class person {
   }
 
   checkFire() {
-    if (isCollide($(this.id), $('fire'))) {
-      addMoney(this.type.sellPrice)
-      this.destroy()
+    if (!this.w && isCollide($(this.id), $('fire'))) {
+      this.w = true
+      setTimeout(() => {
+        addMoney(this.type.sellPrice)
+        this.destroy()
+        this.w = false
+      }, 1000)
     }
   }
 }
