@@ -11,6 +11,80 @@ var jewArray = []
 var blackArray = []
 var richArray = []
 var transArray = []
+var baldArray = []
+
+class saveLoad {
+
+  private static arrToStr(type: type) { // "id/top:left"
+    const arr = type.arr
+    let str = ''
+    for (let i = 0; i < arr.length; i++) {
+      str += arr[i].id
+      str += '/'
+      str += $(arr[i].id).style.top
+      str += ':'
+      str += $(arr[i].id).style.left
+      if (!(i == arr.length - 1)) str += '-'
+    }
+    if (str.endsWith('-')) {
+      str.slice(0, -1)
+    }
+    return str
+  }
+
+  private static strToArr(type: type, string: string) {
+    if (string != '') {
+      const array = type.arr
+      const peopleData = string.split('-')
+      let id: string
+      for (let i = 0; i < peopleData.length; i++) {
+        const idArr = peopleData[i].split('/')
+        id = idArr[0]
+        const posArr = idArr[1].split(':')
+        const posTop = posArr[0]
+        const posLeft = posArr[1]
+        const p = new person(200, 100, id, type)
+        array.push(p)
+        allArray.push(p)
+        p.build()
+        p.setPos(posTop.toString(), posLeft.toString())
+      }
+    }
+  }
+
+  private static removeAllPeople() {
+    if (allArray.length > 0) {
+      for (let i = 0; i <= allArray.length; i++) {
+        allArray[0].destroy()
+      }
+      jewArray = []
+      blackArray = []
+      richArray = []
+      transArray = []
+      baldArray = []
+    }
+  }
+
+  static saveGame() {
+    localStorage.setItem('money', money.toString())
+    localStorage.setItem('jewArray', this.arrToStr(typeJew))
+    localStorage.setItem('blackArray', this.arrToStr(typeBlack))
+    localStorage.setItem('richArray', this.arrToStr(typeRich))
+    localStorage.setItem('transArray', this.arrToStr(typeTrans))
+    localStorage.setItem('baldArray', this.arrToStr(typeBald))
+  }
+  static loadGame() {
+    this.removeAllPeople()
+    num = 0
+    money = 0
+    addMoney(parseInt(localStorage.getItem('money')))
+    this.strToArr(typeJew, localStorage.getItem('jewArray'))
+    this.strToArr(typeBlack, localStorage.getItem('blackArray'))
+    this.strToArr(typeRich, localStorage.getItem('richArray'))
+    this.strToArr(typeTrans, localStorage.getItem('transArray'))
+    this.strToArr(typeBald, localStorage.getItem('baldArray'))
+  }
+}
 
 class type {
 
@@ -20,19 +94,21 @@ class type {
   buyPrice: number
   sellPrice: number
 
-  constructor(arr: Array<person>, counter: HTMLElement, texture: string, buyPrice: number) {
+  constructor(arr: Array<person>, counter: HTMLElement, texture: string, buyPrice: number, sellPrice?: number) {
     this.arr = arr
     this.counter = counter
     this.texture = texture
     this.buyPrice = buyPrice
-    this.sellPrice = Math.round(buyPrice * 1.5)
+    if (sellPrice == null) this.sellPrice = this.buyPrice * 1.5
+    else this.sellPrice = sellPrice
   }
 }
 
-var typeJew = new type(jewArray, $('jewCounter'), "url('img/JewTexture.png')", 2)
+var typeJew = new type(jewArray, $('jewCounter'), "url('img/JewTexture.png')", 2, 5)
 var typeBlack = new type(blackArray, $('blackCounter'), "url('img/BlackTexture.png')", 10)
 var typeRich = new type(richArray, $('richCounter'), "url('img/RichTex.png')", 100)
 var typeTrans = new type(transArray, $('transCounter'), "url('img/TransTexture.png')", 500)
+var typeBald = new type(baldArray, $('baldCounter'), "url('img/BaldTexture.png')", 2000)
 
 var height = Math.max(document.body.scrollHeight, document.body.offsetHeight,
   document.documentElement.clientHeight, document.documentElement.scrollHeight, document.documentElement.offsetHeight)
@@ -85,6 +161,12 @@ class person {
     this.isDown = false
     this.addY = 20
     num += 1
+  }
+
+  setPos(top: string, left: string) {
+    this.addY = 0
+    $(this.id).style.left = left
+    $(this.id).style.top = top
   }
 
   build() {
